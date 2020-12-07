@@ -126,24 +126,10 @@ With this information, I hope it will help my target stakeholders, who are the m
 * Depression is assigned to be class 1 and Anxiety as class 0.
 
 
-* Below is the general lr equation which define the relationship between features and outcomes. In this case, by exponentiating the coefficient of the feature, it shows that if the word is found in the text and other factors remain constant, what are the odds that the text is from an individual having Depression or Anxiety symptoms.  
-
-Where:
-
-- $X_i$ is the word as a feature
-
-- $\beta_i$ is the coefficient of each feature
+* By exponentiating the coefficient of the feature, it shows that if the word is found in the text and other factors remain constant, what are the odds that the text is from an individual having Depression or Anxiety symptoms.  
 
 
-$$
-\begin{eqnarray*}
-\log\bigg(\frac{P(Depression=1)}{1-P(Depression=1)}\bigg) &=& \beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_pX_p \\
-\Rightarrow e^{\Bigg(\log\bigg(\frac{P(Depression=1)}{1-P(Depression=1)}\bigg)\Bigg)} &=& e^{\Bigg(\beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_pX_p\Bigg)} \\
-\Rightarrow \frac{P(Depression=1)}{1-P(Depression=1)} &=& e^{\Bigg(\beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_pX_p\Bigg)} \\
-\end{eqnarray*}
-$$
-
-Hence, the appearance of the word $X_i$, means the text is $e^{\beta_i}$ times as likely to be from Depression, as the model predicts on class 1.
+Hence, the appearance of the word X, it means the text is e^X times as likely to be from Depression, as the model predicts on class 1.
 
 
 # Conclusion for lr_cvec
