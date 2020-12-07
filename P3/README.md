@@ -2,11 +2,11 @@
 
 Depression and Anxiety are mental illnesses that are increasing. They are different illnesses and have different hallmarks but may share common features. By learning to identify them quickly through text, it can help to tailor the treatment for the individual showing signs of Depression or Anxiety. Early intervention aids in management of the condition and can help to prevent tragedies.
 
-Posts are took from Depression and Anxiety sub-reddits. These posts are used to infer that the individual could be displaying symptoms or signs of depression, likewise for Anxiety. Several models will be built and the accuracy will be used to evaluate the performance of the models. Accuracy is chosen as the main metric as it determines if the text came from Depression or Anxiety sub-reddit. The model with the highest accuracy score will be selected as the final model. The final model will be used to determine if the text is about depression or anxiety. 
+Posts are took from Depression and Anxiety sub-reddits. These posts are used to infer that the individual could be displaying symptoms or signs of depression, likewise for Anxiety. Several models will be built and the accuracy will be used to evaluate the performance of the models. Accuracy is chosen as the main metric as it determines if the text came from Depression or Anxiety sub-reddit. The model with the highest accuracy score will be selected as the final model. The final model will be used to determine if the text is about depression or anxiety.
 
-Linear Regression model with CountVectorizer (lr_cvec) has been found to be the best model. If the text is about depression, lr_cvec can predict with 97.6% accuracy. Whereas, if the text is about anxiety, lr_cvec can predict with 93.1% accuracy.
+Naive Bayes model with CountVectorizer (nb_cvec) has been found to be the best model. If the text is about depression, nb_cvec can predict with 88.3% accuracy. Whereas, if the text is about anxiety, nb_cvec can predict with 62.3% accuracy.
 
-With this model, it is hoped that it will help the mental health practioners which include counsellors and psychiatrists to have a quick overview if the individual is leaning towards depression or anxiety behaviour. This will increase the chances of timely intervention and may help reduce the workload of the practioners so that they can reach out to more patients. 
+With this model, it is hoped that it will help the mental health practioners which include counsellors and psychiatrists to have a quick overview if the individual is leaning towards depression behaviour. This will increase the chances of timely intervention and may help reduce the workload of the practioners so that they can reach out to more patients.
 
 # Table of Contents:
 - [Problem Statement](#Problem-Statement)
@@ -53,8 +53,12 @@ With this information, I hope it will help my target stakeholders, who are the m
 * Null values in 'selftext' will be dropped and duplicates will be removed.
 
 # Pre-Processing for text data
-* Create function to clean text
-* Function will remove the punctuations, new lines etc from the string and convert to lowercase. After that it will lemmentize the text.
+* Create function to clean text. Function will remove the punctuations, new lines etc from the string and convert to lowercase. After that it will lemmentize the text.
+
+
+* Words that vividly describe depression and anxiety will be added to the stop words to see if the model can predict well on other indicative words:
+
+* Words are: depress, depressed, depression, depressing, depressant, anxiety, anxious, anxiously
 
 # Modeling using Processed Text
 * Several models will be built and evaluated to determine which model is the most suitable to tackle the issues mentioned in the problem statement.
@@ -71,21 +75,20 @@ With this information, I hope it will help my target stakeholders, who are the m
 * Multinomial NaiveBayes model is used because the target variable is to predict 2 outcomes; to predict if the post came from Depression or Anxiety sub-reddit. The features are the words and the probability of each word occuring in the text is evaluated to look at their importance in prediction. nb is used as the features' outcome is not binary but multinomially distributed.
 
 ## nb_cvec GridSearchCV score vs nb_cvec RandomizedSearchCV score
-* GridSearchCV score is 0.8648987 while RandomizedSearchCV score is 0.8648802. The difference is lesser than 0.01. The run time for GridSearchCV is around 160 seconds (approximately 3 mins) and the runtime for Randomized is around 5 seconds. RandomizedSearchCV will be used so that more parameters can be searched quickly.
+* GridSearchCV score is 0.8073173 while RandomizedSearchCV score is 0.8051135. The difference is around than 0.02. The run time for GridSearchCV is around 154 seconds (approximately 3 mins) and the runtime for Randomized is around 5 seconds. RandomizedSearchCV will be used so that more parameters can be searched quickly.
+
 
 * RandomizedSearchCV is useful for searching through multiple parameters quickly. However, it may compensate accuracy for speed. Hence the score of GridSearchCV and RandomizedSearchCV is compared to see if the score of RandomizedSearchCV is comparable to GridSearchCV before deciding to use RandomizedSearchCV.
 
 # Conclusion for nb_cvec
-* The accuracy for nb_cvec is around 82%. The model seems to be performing well as it passed the benchmark score of 80% and the difference between baseline score and test score is 8%.
+* The training score is around 0.88 and the test score is around 0.76. The model seems to be performing slightly under the benchmark as it is below benchmark score of 80%. The difference between training score and test score is 12%. It is likely that the model is overfitted. It may be due to too many features, which are the words, and too little posts to train the model.
 
 
-* Out of the top 50 words in Depression and Anxiety, there are 37 common words found to be shared between them.
+* Out of the top 50 words in Depression and Anxiety, there are 38 common words found to be shared between them. 
+* Out of the top 50 words in Depression and Anxiety, there are only 12 words unique to Depression and 12 words unique to Anxiety. 
 
 
-* Out of the top 50 words in Depression and Anxiety, there are only 13 words unique to Depression and 13 words unique to Anxiety.
-
-
-* There is a possibility that the machine could not learn to differentiate effectively due to limited number of unique words that define Depression and Anxiety.
+* There is a possibility that the machine could not learn to differentiate effectively due to limited number of unique words that define Depression and Anxiety. 
 
 # Increase stop words list to remove more stop words to try reduce overfitting and increase accuracy
 * After looking at the common words shared between Depression and Anxiety, I will put in words that I think will not help in explaining Depression or Anxiety into the stop words list to see if it reduces the overfitting and increase the accuracy score.
@@ -107,10 +110,11 @@ With this information, I hope it will help my target stakeholders, who are the m
 * TF-IDF is a score that tells us which words are important to one document, relative to all other documents. It is deemed that words that occur often in one document but do not occur in many documents contain more predictive power.
 
 # Conclusion for nb_tvec
-* The test accuracy score for nb_tvec is around 76%. It is lower than the expected score of 80% accuracy to evaluate the model further.
 
-* There are 27 common words found in both Depression and Anxiety. There are 23 words unique to Depression and 23 words unique to Anxiety.
-nb_cvec is performing better than nb_tvec.
+* The test accuracy score for nb_tvec is around 71%. It is lower than the expected score of 80% accuracy to evaluate the model further. There are 27 common words found in both Depression and Anxiety. There are 23 words unique to Depression and 23 words unique to Anxiety.
+
+
+* nb_cvec is performing better than nb_tvec.
 
 # Logistic Regression model with CountVectorizer (lr_cvec)
 * For this model, the Logistic Regression (lr) will be used to predict if the text came from a Depression or Anxiety sub-reddit. Accuracy is used as the main evaluation metric. The vectorizer used is the CountVectorizer (cvec).
@@ -144,9 +148,11 @@ Hence, the appearance of the word $X_i$, means the text is $e^{\beta_i}$ times a
 
 # Conclusion for lr_cvec
 
-* From the bar plots above, in these top 50 words, `depression`, `depressed` and `life` have the largest effect in lr. 
+* From the bar plots above, in these top 50 words, `life`, `happy` and `sad` have the largest effect in lr. 
 
-* As the model predicts on class: 1, which is Depression, these words predict for Depression. For example, for every 1 increase in mention of `depression` in the text, the odds of the text about depression increases by 1.77 times, if all other factors are kept constant. 
+* As the model predicts on class: 1, which is Depression, these words predict for Depression. For example, for every 1 increase in mention of `life` in the text, the odds of the text about depression increases by 1.41 times, if all other factors are kept constant. 
+
+* It is noted that the words need to be put into context, otherwise it is difficult to determine what kind of meaning the words give. 
 
 
 # Logistic Regression model with TF-IDF Vectorizer (lr_tvec)
@@ -164,10 +170,10 @@ Hence, the appearance of the word $X_i$, means the text is $e^{\beta_i}$ times a
 
 # Conclusion for lr_tvec
 
-* The baseline score is around 0.91 and the test score is around 0.79. The model seems to be performing slightly under the benchmark as it is below benchmark score of 80%. It is likely that the model is overfitted.
+* The training score is around 0.89 and the test score is around 0.75. The model seems to be performing slightly under the benchmark as it is below benchmark score of 80%. The difference between the train and test score is around 14%. It is likely that the model is overfitted.
 
 
-* Compared to lr_cvec, lr_cvec is perfoming better (test score of lr_cvec: 87% vs nb_tvec: 79%).
+* Compared to lr_cvec, lr_cvec and lr_tvec have similar performance (test score of lr_cvec: 75% vs nb_tvec: 75%).
 
 
 * The model will not be evaluated further due to likely overfitting.
@@ -180,25 +186,28 @@ Hence, the appearance of the word $X_i$, means the text is $e^{\beta_i}$ times a
 **Vectorizer**: Type of vectorizer used, either CountVectorizer `(cvec)` or TF-IDF Vectorizer `(tvec)`.
 
 
-**Baseline**: Accuracy score obtained by using trained model to predict on `train` data.
+**Training**: Accuracy score obtained by using trained model to predict on `train` data.
 
 
 **Validate**: Accuracy score obtained by using trained model to predict on `validate` data.
 
+**Difference**: Difference in the train score and test score, obtained by (train score - test score).
 
 
-|Model|Vectorizer|Baseline (%)|Validate (%)|
-|---|---|---|---|
-|NaiveBayes Multinomial|cvec|91|82|
-|NaiveBayes Multinomial|tvec|87|76|
-|Logistic Regression|cvec|95|87|
-|Logistic Regression|tvec|91|79|
+
+|Model|Vectorizer|Training (%)|Validate (%)|Difference (%)|
+|---|---|---|---|---|
+|NaiveBayes Multinomial|cvec|88|76|12|
+|NaiveBayes Multinomial|tvec|83|71|12|
+|Logistic Regression|cvec|92|75|17|
+|Logistic Regression|tvec|89|75|14|
+
 
 # Results
 
-### Results for lr_cvec
+### Results for nb_cvec
 
-<img width="635" alt="Confusion Matrix" src="https://user-images.githubusercontent.com/72869207/101298361-95729200-3868-11eb-8d22-464f3d172be7.PNG">
+<img width="564" alt="Confusion Matrix" src="https://user-images.githubusercontent.com/72869207/101344882-2e34fc00-38c1-11eb-8951-36020cc7ec3f.PNG">
 
 * Depression = 1
 * Anxiety = 0
@@ -206,25 +215,36 @@ Hence, the appearance of the word $X_i$, means the text is $e^{\beta_i}$ times a
 - In the validation dataset, there were 154 posts from Depression sub-reddit and 147 posts from Anxiety sub-reddit. 51% of the posts are from Depression and 49% are from Anxiety.
 
 
-- Out of the 154 Depression posts, 142 are correctly predicted. 12 posts are incorrectly predicted as Anxiety posts.
-- Out of the 147 Anxiety posts, 120 are correctly predicted. 27 posts are incorrectly predicted as Depression posts.
+- Out of the 154 Depression posts, 125 are correctly predicted. 29 posts are incorrectly predicted as Anxiety posts.
+- Out of the 147 Anxiety posts, 102 are correctly predicted. 45 posts are incorrectly predicted as Depression posts.
 
 
-- **The test score for Accuracy for the model is 87.0%.**
+- **The test score for Accuracy for the model is 76.5%.**
 
-- **The test score for Specificity to predict Anxiety posts is 93.1%.**
+- **The test score for Specificity to predict Anxiety posts is 62.3%.**
 
-- **The test score for Sensitivity to predict Depression posts is 97.6%.**
+- **The test score for Sensitivity to predict Depression posts is 88.3%.**
+
 
 # Recommendations and Conclusion
 
 **Recommendations**
 
 
-From the models built, lr_cvec has the highest accuracy. It can be utilized to identify posts from individuals showing signs or symptoms of depression or anxiety. If the text is about depression, lr_cvec can predict with 97.6% accuracy. Whereas, if the text is about anxiety, lr_cvec can predict with 93.1% accuracy. The notable words that have a great effect in classifying the text as depression are `depression` and `depressed`, which is quite obvious. As mentioned previously, using `depression` as the example, for every 1 increase in mention of `depression` in the text, the odds of the text about depression increases by 1.77 times, if all other factors are kept constant. Other prominent words are `life`, `happy`, `kill`, `suicide`, `sad` and `suicidal`. For `life` and `happy`, if the individual mentions them a lot in their posts, it may mean that they are not happy and are thinking about their lives frequently. Some interesting words like `mom`,`friends`,`family`, `tired`, `hate` can help to classify the post.
+From the models built, nb_cvec has the highest accuracy. It can be utilized to identify posts from individuals showing signs or symptoms of depression or anxiety. If the text is about depression, nb_cvec can predict with 88.3% accuracy. Whereas, if the text is about anxiety, nb_cvec can predict with 62.3% accuracy. The common words that have high probability of appearing shared between Depression and Anxiety are `like`,`feel`,`make`,`time`,`want` which give clues how depressed or anxious individual express themselves. 
+
+For Depression, some unique words are `someone`, `family`, `friends`, `anymore`, `care`. For Anxiety, some unique words are `month`,`come`,`week`,`happen`,`attack`. Here, it seems that depressed individuals seem to desire for more care and concern while anixety individials are more concerned on the panic bouts.
+
+As the model is able to predict for depression in a text with 88.3% accuracy, the target takeholders, who are the mental health practitioners can try the model to see if it helps them to select for individuals leaning towards depression.
 
 
 **Conclusion**
 
 
-Stakeholders may wish to use the model to see if it can help identify symptoms of depression or anxiety from depression or anxiety sub-reddit posts. By extrapolating to their current patients, it may help to identify if their patients are leaning towards depression or anxiety.
+For this model nb_cvec, the training score is around 0.88 and the test score is around 0.76. The model is performing slightly under the benchmark score of 80%. The difference between training score and test score is 12%. It is likely that the model is overfitted. This could be due to using too many features, which are the words, with too little posts to train the model.
+  
+Out of the top 50 words in Depression and Anxiety, there are 38 common words found to be shared between them. 
+Out of the top 50 words in Depression and Anxiety, there are only 12 words unique to Depression and 12 words unique to   
+Anxiety. It seems that there may be shared features between Depression and Anxiety.
+
+There is a possibility that the machine could not learn to differentiate effectively due to limited number of unique words that define Depression and Anxiety and too many common words. To improve the accuracy of the model, more posts can be collected from the sub-reddits to reduce overfitting in the model. Another factor to look at is to increase the number of stop words so that the machine can learn words specific to depression and anxiety. For this, it will be helpful to enlist the help of the mental health practioners to come up with the list of words as domain expertise is important to help select for words. Boosting may also be attempted to see if it helps the machine to tune the model further.
