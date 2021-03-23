@@ -1,2 +1,1 @@
-# DSI-Projects
-25 Nov 2020
+# Projects (Projects in DSI and others)
